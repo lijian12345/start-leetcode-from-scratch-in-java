@@ -10,7 +10,7 @@ class Solution {
                     break;
                 }
             }
-        }
+        } 
         return temp;
     }
 } 
