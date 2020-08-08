@@ -9,39 +9,39 @@ class Solution {
     Random random = new Random();
 
     public int findKthLargest(int[] nums, int k) {
-        return quickSelect(nums, 0, nums.length - 1, nums.length - k);
+        return quickSelect(nums, nums.length - k, 0, nums.length - 1);
     }
 
-    public int quickSelect(int[] a, int l, int r, int index) {
-        int q = randomPartition(a, l, r);
-        if (q == index) {
-            return a[q];
+    private int quickSelect(int[] nums, int target, int left, int right) {
+        int index = partition(nums, left, right);
+        if (index == target) {
+            return nums[index];
+        } else if (index > target) {
+            return quickSelect(nums, target, left, index - 1);
         } else {
-            return q < index ? quickSelect(a, q + 1, r, index) : quickSelect(a, l, q - 1, index);
+            return quickSelect(nums, target, index + 1, right);
         }
     }
 
-    public int randomPartition(int[] a, int l, int r) {
-        int i = random.nextInt(r - l + 1) + l;
-        swap(a, i, r);
-        return partition(a, l, r);
-    }
-
-    public int partition(int[] a, int l, int r) {
-        int x = a[r], i = l - 1;
-        for (int j = l; j < r; ++j) {
-            if (a[j] <= x) {
-                swap(a, ++i, j);
+    private int partition(int[] nums, int left, int right) {
+        int randomI = random.nextInt(right - left + 1) + left;
+        swap(nums, randomI, right);
+        int pivot = nums[right];
+        int i = left - 1;
+        for (int j = left; j < right; j++) {
+            if (nums[j] <= pivot) {
+                i++;
+                swap(nums, i, j);
             }
         }
-        swap(a, i + 1, r);
+        swap(nums, i + 1, right);
         return i + 1;
     }
 
-    public void swap(int[] a, int i, int j) {
-        int temp = a[i];
-        a[i] = a[j];
-        a[j] = temp;
+    private void swap(int[] nums, int i, int j) {
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
     }
 }
 // @lc code=end
